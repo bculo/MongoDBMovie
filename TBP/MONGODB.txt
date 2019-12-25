@@ -1,0 +1,5 @@
+﻿//kreiraj bazu
+use MovieDB
+
+//kreiraj kolekcije
+db.createCollection('User');

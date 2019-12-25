@@ -1,0 +1,6 @@
+﻿Nuget Package Manager
+	- MongoDB.Driver.Core
+
+Links
+	https://www.qappdesign.com/using-mongodb-with-net-core-webapi/
+	https://www.codeproject.com/Articles/1368325/Test-Driving-MongoDB-with-NET-Core-2
