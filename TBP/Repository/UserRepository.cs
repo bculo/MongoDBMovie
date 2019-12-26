@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System;
 using System.Threading.Tasks;
 using TBP.Entities;
 using TBP.Interfaces;
@@ -13,8 +14,15 @@ namespace TBP.Repository
 
         public async Task<User> GetUserByName(string username)
         {
-            return await _mongo.Find(item => item.UserName.ToLower() == username.ToLower())
-                .FirstOrDefaultAsync();
+            try
+            {
+                return await _mongo.Find(item => item.UserName.ToLower() == username.ToLower())
+                    .FirstOrDefaultAsync();
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
         }
     }
 }

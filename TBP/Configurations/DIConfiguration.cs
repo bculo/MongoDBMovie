@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TBP.Clients;
 using TBP.Configurations.Automapper;
 using TBP.Contracts.Authentication;
 using TBP.Interfaces;
@@ -25,9 +26,13 @@ namespace TBP.Configurations
             services.AddTransient<IPassword, PasswordHasher>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IMovieService, MovieService>();
 
             services.AddTransient<IValidator<AuthLoginRequestModel>, LoginValidator>();
             services.AddTransient<IValidator<AuthRegistrationRequestModel>, RegistrationValidator>();
+
+            services.AddHttpClient<IMovieClient, MovieClient>();
         }
     }
 }

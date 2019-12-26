@@ -11,6 +11,7 @@ namespace TBP.Configurations
         {
             services.Configure<SecurityOptions>(configuration.GetSection(nameof(SecurityOptions)));
             services.Configure<MovieDatabaseOptions>(configuration.GetSection(nameof(MovieDatabaseOptions)));
+            services.Configure<IMDBApiOptions>(configuration.GetSection(nameof(IMDBApiOptions)));
         }
     }
 }

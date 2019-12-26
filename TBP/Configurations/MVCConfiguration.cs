@@ -10,6 +10,7 @@ namespace TBP.Configurations
     {
         public void Configure(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpClient();
             services.AddCors();
             services.AddControllers();
             services.AddMvc(options =>

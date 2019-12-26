@@ -22,6 +22,13 @@ namespace TBP.Repository
             _mongo = database.GetCollection<T>(nameof(T));
         }
 
+        public Repository(MovieDatabaseOptions settings)
+        {
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
+            _mongo = database.GetCollection<T>(nameof(T));
+        }
+
         public async Task<bool> Add(T instance)
         {
             try
