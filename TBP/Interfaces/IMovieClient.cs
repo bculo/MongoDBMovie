@@ -6,7 +6,8 @@ namespace TBP.Interfaces
 {
     public interface IMovieClient
     {
+        Task<List<Genre>> GetMovieGenres(int imdbMovieId);
         Task<List<Movie>> GetPopularMovies(int pageNumber);
-        Task<List<Actor>> GetMovieCrew(int movieID);
+        Task<List<Character>> GetMovieCrew(Movie movie);
     }
 }

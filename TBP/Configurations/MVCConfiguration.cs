@@ -16,10 +16,7 @@ namespace TBP.Configurations
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(ValidationFilter));
-            }).AddFluentValidation(fv => 
-            {
-                fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-            });
+            }).AddFluentValidation();
         }
     }
 }

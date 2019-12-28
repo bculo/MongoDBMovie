@@ -1,9 +1,9 @@
-﻿using System;
+﻿using MongoDB.Bson;
 
 namespace TBP.Entities
 {
     public abstract class Entity
     {
-        public Guid Id { get; set; }
+        public ObjectId Id { get; set; }
     }
 }

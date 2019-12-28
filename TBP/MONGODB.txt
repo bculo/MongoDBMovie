@@ -4,3 +4,6 @@ use MovieDB
 //kreiraj kolekcije
 db.createCollection('User');
 db.createCollection('Movie');
+db.createCollection('MovieGenre');
+db.createCollection('Genre');
+db.createCollection('Character');

@@ -2,9 +2,12 @@
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TBP.Clients;
-using TBP.Configurations.Automapper;
 using TBP.Contracts.Authentication;
+using TBP.Contracts.Movie;
 using TBP.Interfaces;
 using TBP.Repository;
 using TBP.Services;
@@ -17,22 +20,33 @@ namespace TBP.Configurations
         {
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new AuthenticationProfile());
+                mc.AddProfiles(GetProfiles());
             });
             services.AddSingleton(mappingConfig.CreateMapper());
-
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<ITokenManager, TokenManager>();
-            services.AddTransient<IPassword, PasswordHasher>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IMovieRepository, MovieRepository>();
-            services.AddTransient<IMovieService, MovieService>();
-
-            services.AddTransient<IValidator<AuthLoginRequestModel>, LoginValidator>();
-            services.AddTransient<IValidator<AuthRegistrationRequestModel>, RegistrationValidator>();
-
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<ITokenManager, TokenManager>();
+            services.AddScoped<IPassword, PasswordHasher>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IMovieRepository, MovieRepository>();
+            services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IValidator<AuthLoginRequestModel>, LoginValidator>();
+            services.AddScoped<IValidator<AuthRegistrationRequestModel>, RegistrationValidator>();
+            services.AddScoped<IValidator<MoviePaginationRequestModel>, ActorValidator>();
+            services.AddScoped<IValidator<MovieRequestModel>, GenreValidator>();
             services.AddHttpClient<IMovieClient, MovieClient>();
+        }
+
+        private IEnumerable<Profile> GetProfiles()
+        {
+            var profiles = typeof(Startup).Assembly.GetExportedTypes()
+                .Where(i => !i.IsInterface && !i.IsAbstract && typeof(Profile).IsAssignableFrom(i))
+                .Select(Activator.CreateInstance)
+                .Cast<Profile>()
+                .ToList();
+
+            return profiles;
         }
     }
 }

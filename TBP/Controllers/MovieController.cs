@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TBP.Contracts.Movie;
 using TBP.Interfaces;
 
 namespace TBP.Controllers
@@ -13,16 +12,36 @@ namespace TBP.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieService _service;
+        private readonly IMapper _mapper;
 
-        public MovieController(IMovieService service)
+        public MovieController(IMovieService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet("list")]
         public async Task<IActionResult> GetAllMovies()
         {
-            return Ok(await _service.GetAllMovies());
+            return Ok(_mapper.Map<List<MovieResponseModel>>(await _service.GetAllMovies()));
+        }
+
+        [HttpPost("characters")]
+        public async Task<IActionResult> GetMovieCharactes([FromBody] MoviePaginationRequestModel request)
+        {
+            return Ok(_mapper.Map<List<CharacterResponseModel>>(await _service.GetMovieCharacters(request.MovieId, request.Page)));
+        }
+
+        [HttpPost("genres")]
+        public async Task<IActionResult> GetMovieGenres([FromBody] MovieRequestModel request)
+        {
+            return Ok(_mapper.Map<List<GenreResponseModel>>(await _service.GetMovieGenres(request.MovieId)));
+        }
+
+        [HttpPost("movieforgenre")]
+        public async Task<IActionResult> GetMovieForGenre([FromBody] MovieRequestModel request)
+        {
+            return Ok(_mapper.Map<List<MovieResponseModel>>(await _service.GetAllMoviesForGenre(request.MovieId)));
         }
     }
 }

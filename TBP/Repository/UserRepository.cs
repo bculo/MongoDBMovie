@@ -19,7 +19,7 @@ namespace TBP.Repository
                 return await _mongo.Find(item => item.UserName.ToLower() == username.ToLower())
                     .FirstOrDefaultAsync();
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return null;
             }

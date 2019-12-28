@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -12,21 +14,23 @@ namespace TBP.Repository
     public class Repository<T> : IRepository<T> where T : Entity
     {
         protected readonly IMongoCollection<T> _mongo;
+        protected readonly IMongoDatabase _mongoDatabase;
 
+        [ActivatorUtilitiesConstructor]
         public Repository(IOptions<MovieDatabaseOptions> settings)
         {
             var options = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
 
             var client = new MongoClient(options.ConnectionString);
-            var database = client.GetDatabase(options.DatabaseName);
-            _mongo = database.GetCollection<T>(nameof(T));
+            _mongoDatabase = client.GetDatabase(options.DatabaseName);
+            _mongo = _mongoDatabase.GetCollection<T>(typeof(T).Name);
         }
 
         public Repository(MovieDatabaseOptions settings)
         {
             var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-            _mongo = database.GetCollection<T>(nameof(T));
+            _mongoDatabase = client.GetDatabase(settings.DatabaseName);
+            _mongo = _mongoDatabase.GetCollection<T>(typeof(T).Name);
         }
 
         public async Task<bool> Add(T instance)
@@ -36,7 +40,20 @@ namespace TBP.Repository
                 await _mongo.InsertOneAsync(instance);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> AddRange(IEnumerable<T> instances)
+        {
+            try
+            {
+                await _mongo.InsertManyAsync(instances);
+                return true;
+            }
+            catch (Exception)
             {
                 return false;
             }
@@ -48,7 +65,7 @@ namespace TBP.Repository
             {
                 return (int)await _mongo.CountDocumentsAsync(item => true);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return 0;
             }
@@ -64,7 +81,7 @@ namespace TBP.Repository
                     return (result.DeletedCount > 0) ? true : false;
                 return false;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return false;
             }
@@ -76,21 +93,36 @@ namespace TBP.Repository
             {
                 return await _mongo.Find(item => true).ToListAsync();
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return new List<T>();
             }
         }
 
-        public async Task<T> GetById(Guid id)
+        public async Task<T> GetById(ObjectId id)
         {
             try
             {
                 return await _mongo.Find(item => item.Id == id).FirstOrDefaultAsync();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public async Task<List<T>> GetPaginatedResult(int page, int pagesize)
+        {
+            try
+            {
+                return await _mongo.Find(item => true)
+                    .Skip((page - 1) * pagesize)
+                    .Limit(pagesize)
+                    .ToListAsync();
+            }
+            catch (Exception)
+            {
+                return new List<T>();
             }
         }
 
@@ -99,12 +131,12 @@ namespace TBP.Repository
             try
             {
                 var result = await _mongo.ReplaceOneAsync(item => item.Id == instance.Id, instance);
-
+           
                 if (result.IsAcknowledged && result.ModifiedCount > 0)
                     return true;
                 return false;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return false;
             }

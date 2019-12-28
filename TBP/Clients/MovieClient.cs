@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using TBP.Clients.ActorModels;
+using TBP.Clients.GenreModels;
 using TBP.Clients.MovieModels;
 using TBP.Entities;
 using TBP.Interfaces;
@@ -17,6 +19,8 @@ namespace TBP.Clients
     {
         private readonly IMDBApiOptions _options;
 
+
+        [ActivatorUtilitiesConstructor]
         public MovieClient(HttpClient httpClient, IOptions<IMDBApiOptions> options) : base(httpClient)
         {
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
@@ -29,17 +33,17 @@ namespace TBP.Clients
             SetBaseUri(_options.BaseURI);
         }
 
-        public async Task<List<Actor>> GetMovieCrew(int movieID)
+        public async Task<List<Character>> GetMovieCrew(Movie movie)
         {
-            string requestUri = $"{_client.BaseAddress}/movie/{movieID}/credits?api_key={_options.APIKey}";
+            string requestUri = $"{_client.BaseAddress}/movie/{movie.IMDBId}/credits?api_key={_options.APIKey}";
             var response = await _client.GetAsync(requestUri);
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
                 var finalResult = JsonConvert.DeserializeObject<CreditsMovieClientResponse>(json);
-                return MapActorObjects(finalResult);
+                return MapActorObjects(finalResult, movie);
             }
-            return new List<Actor>();
+            return new List<Character>();
         }
 
         public async Task<List<Movie>> GetPopularMovies(int pageNumber)
@@ -55,6 +59,31 @@ namespace TBP.Clients
             return new List<Movie>();
         }
 
+        public async Task<List<Genre>> GetMovieGenres(int imdbMovieId)
+        {
+            string requestUri = $"{_client.BaseAddress}/movie/{imdbMovieId}?api_key={_options.APIKey}";
+            var response = await _client.GetAsync(requestUri);
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                var finalResult = JsonConvert.DeserializeObject<GenreMovieClientResponse>(json);
+                return MapGenreObjects(finalResult);
+            }
+            return new List<Genre>();
+        }
+
+        private List<Genre> MapGenreObjects(GenreMovieClientResponse response)
+        {
+            if (response == null || response.genres == null)
+                return new List<Genre>();
+
+            return response.genres.Select(i => new Genre
+            {
+                IMDBId = i.id,
+                Name = i.name
+            }).ToList();
+        }
+
         private List<Movie> MapMovieObjects(PopularMovieClientResponse response)
         {
             if (response == null || response.results == null)
@@ -63,7 +92,6 @@ namespace TBP.Clients
             return response.results.Select(i => new Movie
             {
                 BackDropPath = i.backdrop_path,
-                Id = Guid.NewGuid(),
                 IMDBId = i.id,
                 IMDBRating = i.vote_average,
                 Language = i.original_language,
@@ -74,15 +102,15 @@ namespace TBP.Clients
             }).ToList();
         }
 
-        private List<Actor> MapActorObjects(CreditsMovieClientResponse response)
+        private List<Character> MapActorObjects(CreditsMovieClientResponse response, Movie movie)
         {
             if (response == null || response.cast == null)
-                return new List<Actor>();
+                return new List<Character>();
 
-            return response.cast.Select(i => new Actor
+            return response.cast.Select(i => new Character
             {
-                Character = i.character,
-                Id = Guid.NewGuid(),
+                MovieId = movie.Id,
+                CharacterInMovie = i.character,
                 Name = i.name,
                 IMDBId = i.id,
                 ProfilePath = i.profile_path

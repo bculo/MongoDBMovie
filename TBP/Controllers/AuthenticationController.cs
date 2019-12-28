@@ -21,7 +21,7 @@ namespace TBP.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(AuthLoginRequestModel request)
+        public async Task<IActionResult> Login([FromBody] AuthLoginRequestModel request)
         {
             var result = await _service.Login(request.UserName, request.Password);
 
@@ -32,7 +32,7 @@ namespace TBP.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(AuthRegistrationRequestModel request)
+        public async Task<IActionResult> Register([FromBody] AuthRegistrationRequestModel request)
         {
             var result = await _service.Register(request.UserName, request.Email, request.Password);
 

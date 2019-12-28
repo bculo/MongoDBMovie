@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.Collections.Generic;
 
 namespace TBP.Entities
 {
@@ -12,5 +14,10 @@ namespace TBP.Entities
         public double IMDBRating { get; set; }
         public string Overview { get; set; }
         public DateTime ReleaseDate { get; set; }
+
+        [BsonIgnore]
+        public List<Character> Characters { get; set; }
+        [BsonIgnore]
+        public List<Genre> Genres { get; set; }
     }
 }
