@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TBP.Entities
+﻿namespace TBP.Entities
 {
     public class User : Entity
     {
