@@ -33,6 +33,7 @@ namespace TBP.Configurations
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IValidator<AuthLoginRequestModel>, LoginValidator>();
             services.AddScoped<IValidator<AuthRegistrationRequestModel>, RegistrationValidator>();
+            services.AddScoped<IValidator<MovieTitleRequestModel>, MovieTitleValidator>();
             services.AddScoped<IValidator<MoviePaginationRequestModel>, ActorValidator>();
             services.AddScoped<IValidator<MovieRequestModel>, GenreValidator>();
             services.AddHttpClient<IMovieClient, MovieClient>();

@@ -4,6 +4,7 @@ import {
   ILoginResponse,
   IRegisterUserRequest
 } from "../models/user";
+import { IMovie, ITitleMovieRequest } from "../models/movie";
 
 axios.defaults.baseURL = "https://localhost:44301/api";
 
@@ -38,6 +39,12 @@ const Authentication = {
     requesttype.post("/authentication/register", request)
 };
 
+const Movie = {
+  getMovies: (request: ITitleMovieRequest): Promise<IMovie[]> =>
+    requesttype.post(`/movie/moviepage`, request),
+}
+
 export default {
-  Authentication
+  Authentication,
+  Movie
 };

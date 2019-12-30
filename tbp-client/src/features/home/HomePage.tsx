@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Segment, Container, Header, Image, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { RootStoreContext } from "../../app/stores/rootStore";
@@ -24,7 +24,7 @@ const HomePage: React.FC = () => {
         </Header>
 
         {userLogedIn && (
-          <Button as={Link} to="/" size="huge" inverted>
+          <Button as={Link} to="/movies" size="huge" inverted>
             Pregledaj filmove
           </Button>
         )}

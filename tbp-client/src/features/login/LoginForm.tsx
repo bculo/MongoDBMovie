@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import {
   combineValidators,
@@ -23,7 +23,10 @@ const validate = combineValidators({
 
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { login } = rootStore.userStore;
+  const { login, user } = rootStore.userStore;
+
+  useEffect(() => {
+  }, [user])
 
   return (
     <Segment clearing>
@@ -44,7 +47,7 @@ const LoginForm = () => {
           dirtySinceLastSubmit
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Label as="a" color="black" ribbon>
+            <Label as="a" color="blue" ribbon>
               Username
             </Label>
             <Field
@@ -53,7 +56,7 @@ const LoginForm = () => {
               component={TextInput}
             />
 
-            <Label as="a" color="black" ribbon>
+            <Label as="a" color="blue" ribbon>
               Password
             </Label>
             <Field
@@ -75,7 +78,7 @@ const LoginForm = () => {
               loading={submitting}
               type="submit"
               content="Prijava"
-              positive
+              color="blue"
             />
           </Form>
         )}

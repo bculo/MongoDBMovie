@@ -47,7 +47,7 @@ const RegistrationForm = () => {
           dirtySinceLastSubmit
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Label as="a" color="black" ribbon>
+            <Label as="a" color="blue" ribbon>
               Korisničko ime
             </Label>
             <Field
@@ -56,12 +56,12 @@ const RegistrationForm = () => {
               component={TextInput}
             />
 
-            <Label as="a" color="black" ribbon>
+            <Label as="a" color="blue" ribbon>
               Lozinka
             </Label>
             <Field name="password" type="password" component={TextInput} />
 
-            <Label as="a" color="black" ribbon>
+            <Label as="a" color="blue" ribbon>
               Email adresa
             </Label>
             <Field
@@ -82,7 +82,7 @@ const RegistrationForm = () => {
               loading={submitting}
               type="submit"
               content="Registracija"
-              positive
+              color="blue"
             />
           </Form>
         )}

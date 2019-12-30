@@ -36,7 +36,7 @@ namespace TBP.Repository
             try
             {
                 return await _mongo.Find(item => item.Title.ToLower().Contains(content))
-                    .SortBy(i => i.Id)
+                    .SortBy(i => i.IMDBRating)
                     .Skip((page - 1) * pagesize)
                     .Limit(pagesize)
                     .ToListAsync();
@@ -66,7 +66,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<List<Genre>> GetMoveGenres(ObjectId id)
+        public async Task<List<Genre>> GetMovieGenres(ObjectId id)
         {
             try
             {

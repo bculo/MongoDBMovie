@@ -11,6 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import Logout from "../../features/logout/Logout";
 import RegistrationForm from "../../features/register/RegistrationForm";
 import { RootStoreContext } from "../stores/rootStore";
+import MovieDashboard from "../../features/dashboard/MovieDashboard";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -18,7 +19,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [getUser]);
 
   return (
     <Fragment>
@@ -35,7 +36,8 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                 <Route path="/login" component={LoginForm} />
                 <Route path="/register" component={RegistrationForm} />
                 <Route path="/logout" component={Logout} />
-                <Route component={NotFound} />
+                <PrivateRoute path="/movies" component={MovieDashboard}/>
+                <Route component={NotFound}/>
               </Switch>
             </Container>
           </Fragment>

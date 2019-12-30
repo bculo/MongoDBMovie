@@ -13,8 +13,6 @@ namespace TBP.Interfaces
         Task<List<Genre>> GetAllGenres();
         Task<List<Movie>> GetAllMovies();
         Task<List<Movie>> GetMovies(int page);
-        Task<ServiceResult> LikeMovie(string movieID, string userID);
-        Task<ServiceResult> CommentMovie(string movieID, string userID, string comment);
         Task<List<Character>> GetMovieCharacters(string movieID, int page);
         Task<List<Genre>> GetMovieGenres(string movieId);
         Task<List<Movie>> GetAllMoviesForGenre(string genreId);

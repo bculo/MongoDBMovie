@@ -26,6 +26,12 @@ namespace TBP.Controllers
             return Ok(_mapper.Map<List<MovieResponseModel>>(await _service.GetAllMovies()));
         }
 
+        [HttpPost("moviepage")]
+        public async Task<IActionResult> GetMoviePage([FromBody] MovieTitleRequestModel model)
+        {
+            return Ok(_mapper.Map<List<MovieResponseModel>>(await _service.SearchMovie(model.Title, model.Page)));
+        }
+
         [HttpPost("characters")]
         public async Task<IActionResult> GetMovieCharactes([FromBody] MoviePaginationRequestModel request)
         {

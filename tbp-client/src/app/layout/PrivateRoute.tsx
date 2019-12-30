@@ -4,8 +4,9 @@ import { RootStoreContext } from "../../app/stores/rootStore";
 import { IUser } from "../models/user";
 
 const PrivateRoute: React.FC<RouteProps> = props => {
-
-  let user: IUser | null = null;
+  const rootStore = useContext(RootStoreContext);
+  const {getUserForRouting} = rootStore.userStore;
+  let user: IUser | null = getUserForRouting;
 
   if (!user) {
     const renderComponent = () => <Redirect to={{ pathname: '/login' }} />;

@@ -90,11 +90,6 @@ namespace TBP.Services
             return result;
         }
 
-        public Task<ServiceResult> CommentMovie(string movieID, string userID, string comment)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<Genre>> GetAllGenres()
         {
             return await _genrerepo.GetAll();
@@ -110,16 +105,8 @@ namespace TBP.Services
             return await _movierepo.GetPaginatedResult(page, _options.PageSize);
         }
 
-        public Task<ServiceResult> LikeMovie(string movieID, string userID)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<Movie>> SearchMovie(string title, int page)
         {
-            if (string.IsNullOrWhiteSpace(title))
-                return new List<Movie>();
-
             title = title.Trim().ToLower();
             return await _movierepo.MovieThatContaints(title, page, _options.PageSize);
         }
@@ -144,7 +131,7 @@ namespace TBP.Services
             if (movie == null)
                 return new List<Genre>();
 
-            return await _movierepo.GetMoveGenres(movie.Id);
+            return await _movierepo.GetMovieGenres(movie.Id);
         }
 
         private ObjectId GetObjectId(string id)

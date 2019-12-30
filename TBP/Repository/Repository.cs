@@ -33,7 +33,7 @@ namespace TBP.Repository
             _mongo = _mongoDatabase.GetCollection<T>(typeof(T).Name);
         }
 
-        public async Task<bool> Add(T instance)
+        public virtual async Task<bool> Add(T instance)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<bool> AddRange(IEnumerable<T> instances)
+        public virtual async Task<bool> AddRange(IEnumerable<T> instances)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<int> Count()
+        public virtual async Task<int> Count()
         {
             try
             {
@@ -71,7 +71,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<bool> Delete(T instance)
+        public virtual async Task<bool> Delete(T instance)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<List<T>> GetAll()
+        public virtual async Task<List<T>> GetAll()
         {
             try
             {
@@ -99,7 +99,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<T> GetById(ObjectId id)
+        public virtual async Task<T> GetById(ObjectId id)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<List<T>> GetPaginatedResult(int page, int pagesize)
+        public virtual async Task<List<T>> GetPaginatedResult(int page, int pagesize)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace TBP.Repository
             }
         }
 
-        public async Task<bool> Update(T instance)
+        public virtual async Task<bool> Update(T instance)
         {
             try
             {

@@ -20,7 +20,7 @@ export default class UserStore{
             runInAction(() => {
                 this.store.commonStore.setJWTToken(response.token);
                 this.user = this.getUserFromToken(response.token);
-                history.push('/');
+                history.push('/movies');
             });
         }catch(error){
             console.log(error);
@@ -48,14 +48,21 @@ export default class UserStore{
 
     @action logout = () => {
         this.removeAllData();
+        this.store.movieStore.restart();
+        this.user = null;
         history.push('/login');
     }
 
     @computed get userLogedIn(): boolean {
+        if(!this.user){
+            this.getUser();
+        }
+
         if(this.user){
             return true;
+        }else{
+            return false;
         }
-        return false;
     }
 
     @computed get getUserForRouting(): IUser | null {
@@ -69,7 +76,6 @@ export default class UserStore{
 
     removeAllData(): void {
         this.store.commonStore.setJWTToken(null);
-        this.user = null;
     }
 
     getUserFromToken(token: string | null) : IUser {
