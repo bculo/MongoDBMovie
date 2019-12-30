@@ -33,15 +33,15 @@ namespace TBP.Controllers
         }
 
         [HttpPost("characters")]
-        public async Task<IActionResult> GetMovieCharactes([FromBody] MoviePaginationRequestModel request)
+        public async Task<IActionResult> GetMovieCharactes([FromBody] MovieRequestModel request)
         {
-            return Ok(_mapper.Map<List<CharacterResponseModel>>(await _service.GetMovieCharacters(request.MovieId, request.Page)));
+            return Ok(_mapper.Map<List<CharacterResponseModel>>(await _service.GetMovieCharacters(request.MovieId)));
         }
 
         [HttpPost("genres")]
         public async Task<IActionResult> GetMovieGenres([FromBody] MovieRequestModel request)
         {
-            return Ok(_mapper.Map<List<GenreResponseModel>>(await _service.GetMovieGenres(request.MovieId)));
+            return Ok(_mapper.Map<List<GenreResponseModel>>(await _service.GetMovieGenres(request.MovieId)););
         }
 
         [HttpPost("movieforgenre")]

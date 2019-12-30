@@ -16,7 +16,7 @@ namespace TBP.Configurations
 {
     public class InitDatabaseConfiguration : IInstaller
     {
-        public bool DatabaseFillStarted { get; set; } = false;
+        public bool DatabaseFillStarted { get; set; } = true;
 
         public void Configure(IServiceCollection services, IConfiguration configuration)
         {

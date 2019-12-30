@@ -9,8 +9,9 @@ namespace TBP.Interfaces
     {
         Task<bool> IMDBIdExists(int imdbId);
         Task<List<Movie>> MovieThatContaints(string content, int page, int pagesize);
-        Task<List<Character>> GetMovieCharactes(ObjectId movieId, int page, int pagesize);
         Task<List<Genre>> GetMovieGenres(ObjectId id);
         Task<List<Movie>> GetAllMoviesForCategory(ObjectId genreId);
+        Task<int> GetNumberOfCharactesInMovie(ObjectId objectId);
+        Task<List<Character>> GetMovieCharactes(ObjectId objectId);
     }
 }

@@ -26,8 +26,8 @@ const MovieList: React.FC = () => {
               <Button
                   floated='right'
                   as={Link}
-                  to={`/student/edit/${movie.id}`}
-                  content="View"
+                  to={`/movies/${movie.id}`}
+                  content="Details"
                   color="blue"
                 />
             </Item.Content>

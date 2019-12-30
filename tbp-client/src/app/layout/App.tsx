@@ -12,6 +12,7 @@ import Logout from "../../features/logout/Logout";
 import RegistrationForm from "../../features/register/RegistrationForm";
 import { RootStoreContext } from "../stores/rootStore";
 import MovieDashboard from "../../features/dashboard/MovieDashboard";
+import MovieDetails from "../../features/dashboard/MovieDetails";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -36,7 +37,8 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                 <Route path="/login" component={LoginForm} />
                 <Route path="/register" component={RegistrationForm} />
                 <Route path="/logout" component={Logout} />
-                <PrivateRoute path="/movies" component={MovieDashboard}/>
+                <PrivateRoute exact path="/movies" component={MovieDashboard}/>
+                <PrivateRoute path="/movies/:id" component={MovieDetails}/>
                 <Route component={NotFound}/>
               </Switch>
             </Container>

@@ -47,8 +47,8 @@ const RegistrationForm = () => {
           dirtySinceLastSubmit
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Label as="a" color="blue" ribbon>
-              Korisničko ime
+            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+              USERNAME
             </Label>
             <Field
               name="username"
@@ -56,13 +56,13 @@ const RegistrationForm = () => {
               component={TextInput}
             />
 
-            <Label as="a" color="blue" ribbon>
-              Lozinka
+            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+              PASSWORD
             </Label>
             <Field name="password" type="password" component={TextInput} />
 
-            <Label as="a" color="blue" ribbon>
-              Email adresa
+            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+              EMAIL
             </Label>
             <Field
               name="email"
@@ -78,10 +78,11 @@ const RegistrationForm = () => {
             )}
 
             <Button
+              fluid
               disabled={(invalid && !dirtySinceLastSubmit) || pristine}
               loading={submitting}
               type="submit"
-              content="Registracija"
+              content="REGISTER"
               color="blue"
             />
           </Form>

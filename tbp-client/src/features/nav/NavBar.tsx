@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Menu, Container, Button, Search, Input } from "semantic-ui-react";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import { observer } from "mobx-react-lite";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
@@ -17,8 +17,14 @@ const NavBar: React.FC = () => {
               alt="logo"
               style={{ marginRight: "10px" }}
             />
-          Filmovi TBP
+          MOVIES TBP
         </Menu.Item>
+
+        {user && (
+            <Menu.Item as={NavLink} to="/movies">
+              MOVIES
+            </Menu.Item>
+          )}
 
         <Menu.Menu position="right">
 
@@ -36,7 +42,7 @@ const NavBar: React.FC = () => {
           {user && (
             <Menu.Item>
               <Button negative onClick={logout}>
-                Logout
+                LOGOUT
               </Button>
             </Menu.Item>
           )}

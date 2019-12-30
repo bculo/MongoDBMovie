@@ -56,9 +56,11 @@ namespace TBP.Services
                 }
             }
 
+            Genre mongoGenre = await _genrerepo.GetByIMDBId(genre.IMDBId);
+
             MovieGenre instance = new MovieGenre
             {
-                GenreId = genre.Id,
+                GenreId = mongoGenre.Id,
                 MovieId = GetObjectId(movieId),
             };
 
@@ -67,7 +69,6 @@ namespace TBP.Services
                 result.SetErrorMessage("Error");
                 return result;
             }
-
             return result;
         }
 
@@ -111,18 +112,18 @@ namespace TBP.Services
             return await _movierepo.MovieThatContaints(title, page, _options.PageSize);
         }
 
-        public async Task<List<Character>> GetMovieCharacters(string movieID, int page)
+        public async Task<List<Character>> GetMovieCharacters(string movieID)
         {
             var movie = await _movierepo.GetById(GetObjectId(movieID));
             if (movie == null)
                 return new List<Character>();
 
-            if(await _characterrepo.Count() > 0)
-                return await _movierepo.GetMovieCharactes(movie.Id, page, _options.PageSize);
+            if (await _movierepo.GetNumberOfCharactesInMovie(GetObjectId(movieID)) > 0)
+                return await _movierepo.GetMovieCharactes(GetObjectId(movieID));
 
             var charactes = await _client.GetMovieCrew(movie);
             await _characterrepo.AddRange(charactes);
-            return await _characterrepo.GetPaginatedResult(page, _options.PageSize);
+            return await _movierepo.GetMovieCharactes(GetObjectId(movieID));
         }
 
         public async Task<List<Genre>> GetMovieGenres(string movieId)
@@ -131,7 +132,8 @@ namespace TBP.Services
             if (movie == null)
                 return new List<Genre>();
 
-            return await _movierepo.GetMovieGenres(movie.Id);
+            var result = await _movierepo.GetMovieGenres(movie.Id);
+            return result;
         }
 
         private ObjectId GetObjectId(string id)

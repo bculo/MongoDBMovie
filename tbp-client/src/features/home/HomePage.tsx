@@ -10,34 +10,34 @@ const HomePage: React.FC = () => {
   return (
     <Segment inverted textAlign="center" vertical className="masthead">
       <Container text>
-        <Header as="h1" inverted>
+        <Header size='huge' inverted>
           <Image
             size="massive"
             src="/assets/popcorn.png"
             alt="logo"
-            style={{ marginBottom: 12 }}
+            style={{ marginBottom: 12, width: "100px", heigth: "auto" }}
           />
         </Header>
 
-        <Header as="h2" inverted>
-          Filmovi TBP
+        <Header as="h1" inverted style={{"font-size": "500%"}}>
+          MOVIES TBP
         </Header>
 
         {userLogedIn && (
           <Button as={Link} to="/movies" size="huge" inverted>
-            Pregledaj filmove
+            CHECK POPULAR MOVIES
           </Button>
         )}
 
         {!userLogedIn && (
-          <Button as={Link} to="/login" size="huge" inverted>
-            Prijava
+          <Button as={Link} to="/login" size="huge" inverted style={{width: "250px"}}>
+            JOIN
           </Button>
         )}
 
         {!userLogedIn && (
-          <Button as={Link} to="/register" size="huge" inverted>
-            Registracija
+          <Button as={Link} to="/register" size="huge" inverted style={{width: "250px"}}>
+            SIGN UP
           </Button>
         )}
 

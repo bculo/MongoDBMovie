@@ -13,7 +13,7 @@ namespace TBP.Interfaces
         Task<List<Genre>> GetAllGenres();
         Task<List<Movie>> GetAllMovies();
         Task<List<Movie>> GetMovies(int page);
-        Task<List<Character>> GetMovieCharacters(string movieID, int page);
+        Task<List<Character>> GetMovieCharacters(string movieID);
         Task<List<Genre>> GetMovieGenres(string movieId);
         Task<List<Movie>> GetAllMoviesForGenre(string genreId);
     }

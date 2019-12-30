@@ -36,7 +36,7 @@ namespace TBP.Repository
             try
             {
                 return await _mongo.Find(item => item.Title.ToLower().Contains(content))
-                    .SortBy(i => i.IMDBRating)
+                    .SortByDescending(i => i.IMDBRating)
                     .Skip((page - 1) * pagesize)
                     .Limit(pagesize)
                     .ToListAsync();
@@ -44,25 +44,6 @@ namespace TBP.Repository
             catch (Exception)
             {
                 return new List<Movie>();
-            }
-        }
-
-        public async Task<List<Character>> GetMovieCharactes(ObjectId movieId, int page, int pagesize)
-        {
-            try
-            {
-                var characterCollection = _mongoDatabase.GetCollection<Character>(nameof(Character));
-
-                var result = await characterCollection.Find(item => item.MovieId == movieId)
-                    .Skip((page - 1) * pagesize)
-                    .Limit(pagesize)
-                    .ToListAsync();
-
-                return result;
-            }
-            catch (Exception)
-            {
-                return new List<Character>();
             }
         }
 
@@ -117,6 +98,37 @@ namespace TBP.Repository
             catch (Exception)
             {
                 return new List<Movie>();
+            }
+        }
+
+        public async Task<List<Character>> GetMovieCharactes(ObjectId objectId)
+        {
+            try
+            {
+                var characterCollection = _mongoDatabase.GetCollection<Character>(nameof(Character));
+
+                var result = await characterCollection.Find(item => item.MovieId == objectId)
+                    .ToListAsync();
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return new List<Character>();
+            }
+        }
+
+        public async Task<int> GetNumberOfCharactesInMovie(ObjectId objectId)
+        {
+            try
+            {
+                var characterCollection = _mongoDatabase.GetCollection<Character>(nameof(Character));
+                return (int)await characterCollection.Find(item => item.MovieId == objectId)
+                    .CountDocumentsAsync();
+            }
+            catch (Exception)
+            {
+                return 0;
             }
         }
     }

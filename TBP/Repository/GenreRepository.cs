@@ -13,6 +13,18 @@ namespace TBP.Repository
         public GenreRepository(IOptions<MovieDatabaseOptions> settings) : base(settings) { }
         public GenreRepository(MovieDatabaseOptions settings) : base(settings) { }
 
+        public async Task<Genre> GetByIMDBId(int imdbId)
+        {
+            try
+            {
+                return await _mongo.Find(item => item.IMDBId == imdbId).FirstOrDefaultAsync();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<bool> IMDBIdExists(int imdbId)
         {
             try

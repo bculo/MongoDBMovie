@@ -6,7 +6,7 @@ import {
   composeValidators,
   hasLengthGreaterThan
 } from "revalidate";
-import { Form, Button, Segment, Label, Header } from "semantic-ui-react";
+import { Form, Button, Segment, Label, Header, Divider } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import ErrorMessage from "../../app/common/form/ErrorMessage";
 import { ILoginUserRequest } from "../../app/models/user";
@@ -40,15 +40,14 @@ const LoginForm = () => {
         render={({
           handleSubmit,
           submitting,
-          form,
           submitError,
           invalid,
           pristine,
           dirtySinceLastSubmit
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Label as="a" color="blue" ribbon>
-              Username
+            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+              USERNAME
             </Label>
             <Field
               name="username"
@@ -56,8 +55,8 @@ const LoginForm = () => {
               component={TextInput}
             />
 
-            <Label as="a" color="blue" ribbon>
-              Password
+            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+              PASSWORD
             </Label>
             <Field
               name="password"
@@ -73,11 +72,12 @@ const LoginForm = () => {
               />
             )}
 
-            <Button
+            <Button 
+              fluid
               disabled={(invalid && !dirtySinceLastSubmit) || pristine}
               loading={submitting}
               type="submit"
-              content="Prijava"
+              content="LOGIN"
               color="blue"
             />
           </Form>
