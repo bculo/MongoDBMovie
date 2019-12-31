@@ -72,6 +72,29 @@ namespace TBP.Clients
             return new List<Genre>();
         }
 
+        public async Task<Movie> GetMovie(int imdbId)
+        {
+            string requestUri = $"{_client.BaseAddress}/movie/{imdbId}?api_key={_options.APIKey}";
+            var response = await _client.GetAsync(requestUri);
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                var i = JsonConvert.DeserializeObject<MovieClientModel>(json);
+                return new Movie
+                {
+                    BackDropPath = i.backdrop_path,
+                    IMDBId = i.id,
+                    IMDBRating = i.vote_average,
+                    Language = i.original_language,
+                    Overview = i.overview,
+                    PosterPath = i.poster_path,
+                    ReleaseDate = i.release_date,
+                    Title = i.title
+                };
+            }
+            return null;
+        }
+
         private List<Genre> MapGenreObjects(GenreMovieClientResponse response)
         {
             if (response == null || response.genres == null)

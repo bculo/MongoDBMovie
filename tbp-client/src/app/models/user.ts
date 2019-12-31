@@ -12,6 +12,7 @@ export interface ILoginUserRequest{
 export interface IUser{
     id: string,
     username: string
+    role: string
 }
 
 export interface ILoginResponse{

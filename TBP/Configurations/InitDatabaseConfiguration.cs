@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -16,12 +16,39 @@ namespace TBP.Configurations
 {
     public class InitDatabaseConfiguration : IInstaller
     {
-        public bool DatabaseFillStarted { get; set; } = true;
+        public bool DatabaseFillStarted { get; set; } = false;
 
         public void Configure(IServiceCollection services, IConfiguration configuration)
         {
+            CreateUserRoles(configuration);
             GetMoviesFromClient(configuration);
             GetGenresFromClinet(configuration);
+        }
+
+        private void CreateUserRoles(IConfiguration configuration)
+        {
+            Task.Run(async () => //run task
+            {
+                IRepository<Role> roleRepo = RepositoryFactory.GetRoleRepo(configuration);
+                if(await roleRepo.Count() == 0)
+                {
+                    //add roles to mongoDB
+                    var roles = configuration.GetSection(nameof(Role)).Get<Role[]>();
+                    bool successRoles = await roleRepo.AddRange(roles);
+                    if (!successRoles)
+                        throw new Exception("error - roles");
+
+                    //add admin to mongoDB
+                    IPassword hasher = ServiceFactory.GetPasswordHasher(configuration);
+                    IRepository<User> userRepo = RepositoryFactory.GetUserRepo(configuration);
+                    var admin = configuration.GetSection(nameof(User)).Get<User>();
+                    admin.HashedPassword = await hasher.HashPassword(admin.UserName);
+                    admin.RoleId = roles.FirstOrDefault(i => i.LowercaseName == "admin").Id;
+                    bool successAdmin = await userRepo.Add(admin);
+                    if (!successAdmin)
+                        throw new Exception("error - admin");
+                }
+            }).GetAwaiter().GetResult();
         }
 
         private void GetMoviesFromClient(IConfiguration configuration)
@@ -91,6 +118,12 @@ namespace TBP.Configurations
                 new GenreRepository(databaseOptions),
                 new Repository<MovieGenre>(databaseOptions));
         }
+
+        public static IPassword GetPasswordHasher(IConfiguration configuration)
+        {
+            var security = configuration.GetSection(nameof(SecurityOptions)).Get<SecurityOptions>();
+            return new PasswordHasher(security);
+        }
     }
 
     public static class RepositoryFactory
@@ -99,6 +132,18 @@ namespace TBP.Configurations
         {
             var databaseOptions = configuration.GetSection(nameof(MovieDatabaseOptions)).Get<MovieDatabaseOptions>();
             return new MovieRepository(databaseOptions);
+        }
+
+        public static IRepository<Role> GetRoleRepo(IConfiguration configuration)
+        {
+            var databaseOptions = configuration.GetSection(nameof(MovieDatabaseOptions)).Get<MovieDatabaseOptions>();
+            return new Repository<Role>(databaseOptions);
+        }
+
+        public static IRepository<User> GetUserRepo(IConfiguration configuration)
+        {
+            var databaseOptions = configuration.GetSection(nameof(MovieDatabaseOptions)).Get<MovieDatabaseOptions>();
+            return new Repository<User>(databaseOptions);
         }
     }
 

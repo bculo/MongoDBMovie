@@ -1,7 +1,12 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { ToastContainer } from "react-toastify";
-import { RouteComponentProps, withRouter, Route, Switch } from "react-router-dom";
+import {
+  RouteComponentProps,
+  withRouter,
+  Route,
+  Switch
+} from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import NavBar from "../../features/nav/NavBar";
 import { Container } from "semantic-ui-react";
@@ -13,10 +18,11 @@ import RegistrationForm from "../../features/register/RegistrationForm";
 import { RootStoreContext } from "../stores/rootStore";
 import MovieDashboard from "../../features/dashboard/MovieDashboard";
 import MovieDetails from "../../features/dashboard/MovieDetails";
+import AdminDashboard from "../../features/admin/AdminDashboard";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
-  const {getUser} = rootStore.userStore;
+  const { getUser } = rootStore.userStore;
 
   useEffect(() => {
     getUser();
@@ -37,15 +43,28 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                 <Route path="/login" component={LoginForm} />
                 <Route path="/register" component={RegistrationForm} />
                 <Route path="/logout" component={Logout} />
-                <PrivateRoute exact path="/movies" component={MovieDashboard}/>
-                <PrivateRoute path="/movies/:id" component={MovieDetails}/>
-                <Route component={NotFound}/>
+                <PrivateRoute
+                  exact
+                  path="/movies"
+                  availableForRoles={["admin", "user"]}
+                  component={MovieDashboard}
+                />
+                <PrivateRoute
+                  path="/movies/:id"
+                  availableForRoles={["admin", "user"]}
+                  component={MovieDetails}
+                />
+                <PrivateRoute
+                  path="/admin"
+                  availableForRoles={["admin"]}
+                  component={AdminDashboard}
+                />
+                <Route component={NotFound} />
               </Switch>
             </Container>
           </Fragment>
         )}
       />
-
     </Fragment>
   );
 };

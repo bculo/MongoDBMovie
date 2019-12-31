@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
@@ -13,9 +14,15 @@ namespace TBP.Services
     {
         protected readonly SecurityOptions _security;
 
+        [ActivatorUtilitiesConstructor]
         public PasswordHasher(IOptions<SecurityOptions> options)
         {
             _security = options.Value;
+        }
+
+        public PasswordHasher(SecurityOptions options)
+        {
+            _security = options;
         }
 
         public virtual async Task<bool> CheckPassword(string userCredentials, string plainPassword)

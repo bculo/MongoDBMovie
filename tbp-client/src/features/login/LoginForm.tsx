@@ -6,7 +6,7 @@ import {
   composeValidators,
   hasLengthGreaterThan
 } from "revalidate";
-import { Form, Button, Segment, Label, Header, Divider } from "semantic-ui-react";
+import { Form, Button, Segment, Label, Header } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import ErrorMessage from "../../app/common/form/ErrorMessage";
 import { ILoginUserRequest } from "../../app/models/user";

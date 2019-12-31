@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using TBP.Entities;
 using TBP.Interfaces;
 using TBP.Services.Result;
@@ -10,12 +11,14 @@ namespace TBP.Services
         protected readonly IPassword _hasher;
         protected readonly ITokenManager _token;
         protected readonly IUserRepository _userrepo;
+        protected readonly IRepository<Role> _rolerepo;
 
-        public UserService(IPassword hasher, ITokenManager token, IUserRepository userrepo)
+        public UserService(IPassword hasher, ITokenManager token, IUserRepository userrepo, IRepository<Role> rolerepo)
         {
             _hasher = hasher;
             _token = token;
             _userrepo = userrepo;
+            _rolerepo = rolerepo;
         }
 
         public virtual async Task<AuthLoginResult> Login(string userName, string plainPassword)
@@ -56,11 +59,15 @@ namespace TBP.Services
                 return result;
             }
 
+            var roles = await _rolerepo.GetAll();
+            var userRole = roles.FirstOrDefault(i => i.LowercaseName == "user");
+
             User newUser = new User()
             {
                 UserName = userName,
                 Email = email,
-                HashedPassword = await _hasher.HashPassword(plainPassword)
+                HashedPassword = await _hasher.HashPassword(plainPassword),
+                RoleId = userRole.Id
             };
 
             if(!await _userrepo.Add(newUser))

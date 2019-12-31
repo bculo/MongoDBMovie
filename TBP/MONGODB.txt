@@ -7,3 +7,4 @@ db.createCollection('Movie');
 db.createCollection('MovieGenre');
 db.createCollection('Genre');
 db.createCollection('Character');
+db.createCollection('Role')

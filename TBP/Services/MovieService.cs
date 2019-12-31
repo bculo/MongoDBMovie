@@ -72,6 +72,26 @@ namespace TBP.Services
             return result;
         }
 
+        public async Task<ServiceResult> AddMovie(int imdbId)
+        {
+            var clientMovieTask =  _client.GetMovie(imdbId);
+            var genresTask = _client.GetMovieGenres(imdbId);
+            await Task.WhenAll(clientMovieTask, genresTask);
+
+            var result = new ServiceResult();
+            var clientMovie = clientMovieTask.Result;
+            var genres = genresTask.Result;
+
+            if(!await _movierepo.Add(clientMovie))
+            {
+                result.SetErrorMessage("Error");
+                return result;
+            }
+
+            foreach (var genre in genres)
+                await AddGenreToMovie(clientMovie.Id.ToString(), genre);
+            return result;
+        }
         public async Task<ServiceResult> AddMovie(Movie movie)
         {
             var result = new ServiceResult();
@@ -148,6 +168,39 @@ namespace TBP.Services
                 return new List<Movie>();
 
             return await _movierepo.GetAllMoviesForCategory(GetObjectId(genreId));
+        }
+
+        public async Task<List<MovieWrapper>> GetNewMovies(int page)
+        {
+            var result = await _client.GetPopularMovies(page);
+            var temp = new List<MovieWrapper>();
+
+            foreach(var movie in result)
+            {
+                var wrapper = new MovieWrapper(movie);
+                if(await _movierepo.IMDBIdExists(movie.IMDBId))
+                {
+                    wrapper.ExistsInDb = true;
+                }
+                temp.Add(wrapper);
+            }
+
+            return temp;
+        }
+
+        public async Task<ServiceResult> DeleteMovie(int imdbId)
+        {
+            var serviceResult = new ServiceResult();
+
+            var movieInstance = await _movierepo.GetByImdbId(imdbId);
+            if(movieInstance == null)
+            {
+                serviceResult.SetErrorMessage("Error");
+                return serviceResult;
+            }
+
+            var deleteResult = await _movierepo.Delete(movieInstance);
+            return serviceResult;
         }
     }
 }

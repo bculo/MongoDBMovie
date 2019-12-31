@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { Form, Button, Segment, Label, Header } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { ILoginUserRequest, IRegisterUserRequest } from "../../app/models/user";
+import { IRegisterUserRequest } from "../../app/models/user";
 import TextInput from "../../app/common/form/TextInput";
 import ErrorMessage from "../../app/common/form/ErrorMessage";
 import {
@@ -47,7 +47,12 @@ const RegistrationForm = () => {
           dirtySinceLastSubmit
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+            <Label
+              as="a"
+              color="blue"
+              ribbon
+              style={{ marginBottom: "10px", width: "180px" }}
+            >
               USERNAME
             </Label>
             <Field
@@ -56,12 +61,22 @@ const RegistrationForm = () => {
               component={TextInput}
             />
 
-            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+            <Label
+              as="a"
+              color="blue"
+              ribbon
+              style={{ marginBottom: "10px", width: "180px" }}
+            >
               PASSWORD
             </Label>
             <Field name="password" type="password" component={TextInput} />
 
-            <Label as="a" color="blue" ribbon style={{marginBottom: "10px", width: "180px"}}>
+            <Label
+              as="a"
+              color="blue"
+              ribbon
+              style={{ marginBottom: "10px", width: "180px" }}
+            >
               EMAIL
             </Label>
             <Field

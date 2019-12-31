@@ -8,6 +8,7 @@ namespace TBP.Interfaces
     public interface IMovieRepository : IRepository<Movie>
     {
         Task<bool> IMDBIdExists(int imdbId);
+        Task<Movie> GetByImdbId(int imdbID);
         Task<List<Movie>> MovieThatContaints(string content, int page, int pagesize);
         Task<List<Genre>> GetMovieGenres(ObjectId id);
         Task<List<Movie>> GetAllMoviesForCategory(ObjectId genreId);

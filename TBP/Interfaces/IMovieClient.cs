@@ -9,5 +9,6 @@ namespace TBP.Interfaces
         Task<List<Genre>> GetMovieGenres(int imdbMovieId);
         Task<List<Movie>> GetPopularMovies(int pageNumber);
         Task<List<Character>> GetMovieCrew(Movie movie);
+        Task<Movie> GetMovie(int imdbId);
     }
 }

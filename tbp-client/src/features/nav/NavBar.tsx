@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Menu, Container, Button, Search, Input } from "semantic-ui-react";
+import { Menu, Container, Button } from "semantic-ui-react";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import { observer } from "mobx-react-lite";
 import { Link, NavLink } from "react-router-dom";
@@ -12,22 +12,27 @@ const NavBar: React.FC = () => {
     <Menu fixed="top" inverted>
       <Container>
         <Menu.Item as={Link} to="/">
-            <img
-              src="/assets/popcorn.png"
-              alt="logo"
-              style={{ marginRight: "10px" }}
-            />
+          <img
+            src="/assets/popcorn.png"
+            alt="logo"
+            style={{ marginRight: "10px" }}
+          />
           MOVIES TBP
         </Menu.Item>
 
         {user && (
-            <Menu.Item as={NavLink} to="/movies">
-              MOVIES
-            </Menu.Item>
-          )}
+          <Menu.Item as={NavLink} to="/movies">
+            MOVIES
+          </Menu.Item>
+        )}
+
+        {user && user.role === "admin" && (
+          <Menu.Item as={NavLink} to="/admin">
+            MANAGE
+          </Menu.Item>
+        )}
 
         <Menu.Menu position="right">
-
           {user && (
             <Menu.Item>
               <img

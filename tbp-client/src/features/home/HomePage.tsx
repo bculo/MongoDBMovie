@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Segment, Container, Header, Image, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { RootStoreContext } from "../../app/stores/rootStore";
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
           />
         </Header>
 
-        <Header as="h1" inverted style={{"font-size": "500%"}}>
+        <Header as="h1" inverted style={{fontSize: "500%"}}>
           MOVIES TBP
         </Header>
 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, Fragment } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Header, Search, Input } from "semantic-ui-react";
+import { Button, Header } from "semantic-ui-react";
 import MovieList from "./MovieList";
 import { RootStoreContext } from "../../app/stores/rootStore";
 
@@ -10,18 +10,20 @@ const MovieDashboard: React.FC = () => {
 
   useEffect(() => {
     loadMoreMovies();
-  }, []);
+  }, [loadMoreMovies]);
 
   return (
     <Fragment>
-        <Header as="h1" textAlign="center">List of movies</Header>
+        <Header as="h1" textAlign="center">MOVIE LIST</Header>
         <MovieList />
         {hasMoreRecords && (
           <Button
             onClick={loadMoreMovies}
+            fluid
             primary
             color="blue"
-            content="Load more..."
+            content="LOAD MORE..."
+            style={{marginBottom: "50px"}}
           />
         )}
     </Fragment>

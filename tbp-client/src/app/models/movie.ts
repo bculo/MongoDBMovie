@@ -8,6 +8,19 @@ export interface IMovie{
     releasedate: string
 }
 
+export interface IMovieWrapper{
+    posterPath: string,
+    title: string,
+    imdbId: number,
+    imdbRating: string,
+    overview: string,
+    existsInDb: boolean
+}
+
+export interface IManageMovieRequest{
+    imdbid: number,
+}
+
 export interface ITitleMovieRequest{
     title: string,
     page: number

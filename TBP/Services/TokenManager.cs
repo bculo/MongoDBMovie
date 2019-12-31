@@ -50,6 +50,7 @@ namespace TBP.Services
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(ClaimTypes.Role, user.Role.LowercaseName)
             };
         }
     }

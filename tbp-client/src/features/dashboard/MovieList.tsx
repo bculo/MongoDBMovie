@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Segment, Item, Button, Grid, Divider } from "semantic-ui-react";
+import { Segment, Item, Button, Divider } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import { IMovie } from "../../app/models/movie";

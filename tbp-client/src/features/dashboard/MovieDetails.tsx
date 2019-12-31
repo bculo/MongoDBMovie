@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Fragment, useState } from "react";
+import React, { useContext, useEffect, Fragment } from "react";
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
 import { RootStoreContext } from "../../app/stores/rootStore";
@@ -43,7 +43,7 @@ const MovieDetails: React.FC<RouteComponentProps<DetailsParams>> = ({
     return () => {
       restart();
     };
-  }, []);
+  }, [getMovieFromStore, getMovieCharactesApi, getMovieCategoriesApi, restart, match.params.id]);
 
   return (
     <Fragment>
@@ -57,13 +57,13 @@ const MovieDetails: React.FC<RouteComponentProps<DetailsParams>> = ({
             <Header as="h3">Rating: {selectedMovie?.imdbRating}</Header>
             <Container>{selectedMovie?.overview}</Container>
             <Divider />
+            <Label.Group color="blue" tag>
             {getGenres.map((genre: IGenre) => (
-              <Label.Group color="blue" tag>
                 <Label as="a" key={genre.id}>
                   {genre.name}
                 </Label>
-              </Label.Group>
             ))}
+            </Label.Group>
           </Grid.Column>
         </Grid>
       </Segment>

@@ -14,6 +14,7 @@ namespace TBP.Configurations.Automapper
                 .ForMember(i => i.Id, opt => opt.MapFrom(src => src.Id.ToString()));
             CreateMap<Genre, GenreResponseModel>()
                 .ForMember(i => i.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+            CreateMap<Genre, MovieWrapperResponseModel>();
         }
     }
 }

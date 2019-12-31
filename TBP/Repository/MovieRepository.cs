@@ -131,5 +131,17 @@ namespace TBP.Repository
                 return 0;
             }
         }
+
+        public async Task<Movie> GetByImdbId(int imdbID)
+        {
+            try
+            {
+                return await _mongo.Find(item => item.IMDBId == imdbID).FirstOrDefaultAsync();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
